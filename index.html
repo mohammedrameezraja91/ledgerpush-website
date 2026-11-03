@@ -1,42 +1,543 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LedgerPush — bills, bank alerts and cash book into Tally</title><meta name="description" content="LedgerPush reads your bills, bank alerts and Google Sheets cash book and posts them into TallyPrime.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%232563EB'/%3E%3Cpath d='M13 3 5 14h6l-1 7 8-11h-6z' fill='white'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="/style.css"></head>
-<body><header class="top"><div class="wrap"><a class="brand" href="/"><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span> LedgerPush</a>
-<nav><a class="hide-sm" href="/#features">Features</a><a class="hide-sm" href="/#google-data">Google data</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav></div></header>
-<main>
-<div class="hero wrap">
-<h1>Your bills, bank alerts and cash book &mdash;<br>posted to Tally in minutes, not hours.</h1>
-<p>LedgerPush is a Windows desktop app for Indian businesses that use TallyPrime. It reads your purchase bills, bank alerts and daily cash book, lets you check every entry, and posts them straight into Tally for you.</p>
-<a class="btn" href="mailto:ledgerpush.admin@gmail.com?subject=LedgerPush%20enquiry">Get in touch</a>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LedgerPush | Bills in. Tally done.</title>
+<meta name="description" content="LedgerPush reads your bills, bank alerts and Google Sheets cash book and posts them into TallyPrime.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%232f6bff'/%3E%3Cpath d='M13.2 4.5L6.8 13.2h4.4l-.6 6.3 6.6-8.9h-4.5z' fill='%23fff'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#0b0b0f;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.it{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.navlink{font-size:14px;font-weight:600;color:#4b5060;transition:color .2s}.navlink:hover{color:#0b0b0f}
+.btn{transition:transform .2s,box-shadow .2s}.btn:hover{transform:translateY(-2px)}
+details{border-bottom:1px solid #e9eaf0}
+summary{cursor:pointer;list-style:none;padding:22px 0;font-size:19px;font-weight:700;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:500;font-size:26px;line-height:1;color:#6b7280}
+details[open] summary::after{content:"\2212"}
+
+/* entrance + reveal */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.up1{animation:fadeUp .8s cubic-bezier(.2,.7,.2,1) both}
+.up2{animation:fadeUp .8s .12s cubic-bezier(.2,.7,.2,1) both}
+.up3{animation:fadeUp .8s .24s cubic-bezier(.2,.7,.2,1) both}
+.up4{animation:fadeUp .8s .36s cubic-bezier(.2,.7,.2,1) both}
+.up5{animation:fadeUp 1s .3s cubic-bezier(.2,.7,.2,1) both}
+@supports (animation-timeline: view()){
+  .reveal{animation:fadeUp linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+.lift{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.lift:hover{transform:translateY(-5px);box-shadow:0 22px 50px rgba(20,30,80,.10)}
+
+/* floating chips */
+@keyframes floaty{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.chip{position:absolute;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e9eaf0;border-radius:980px;padding:9px 16px;font-size:13px;font-weight:700;box-shadow:0 12px 34px rgba(20,30,80,.12);animation:floaty 4.5s ease-in-out infinite alternate;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#2f6bff}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.blink{animation:blink 1.2s infinite}
+
+/* mini mockups inside step cards */
+.mini{height:170px;border-radius:20px;background:#f6f7fb;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.mseg{position:relative;display:flex;background:#fff;border-radius:12px;padding:3px;width:210px;box-shadow:0 4px 14px rgba(20,30,80,.08)}
+.mpill{position:absolute;top:3px;bottom:3px;width:calc(33.333% - 2px);border-radius:10px;background:#2f6bff;animation:segmove 9s infinite}
+.mt{position:relative;flex:1;text-align:center;padding:8px 0;font-size:12px;font-weight:700}
+.mt1{animation:t1 9s infinite}.mt2{animation:t2 9s infinite}.mt3{animation:t3 9s infinite}
+@keyframes segmove{0%,28%{left:3px}33%,61%{left:calc(33.333% + 1px)}66%,95%{left:calc(66.666% - 1px)}100%{left:3px}}
+@keyframes t1{0%,28%{color:#fff}33%,100%{color:#6b7280}}
+@keyframes t2{0%,28%{color:#6b7280}33%,61%{color:#fff}66%,100%{color:#6b7280}}
+@keyframes t3{0%,61%{color:#6b7280}66%,95%{color:#fff}100%{color:#6b7280}}
+.paper{width:84px;height:108px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(20,30,80,.12);padding:14px 12px;box-sizing:border-box;position:relative;overflow:hidden}
+.paper i{display:block;height:5px;border-radius:3px;background:#e5e7ee;margin-bottom:8px}
+.scanline{position:absolute;left:0;right:0;height:2px;background:#2f6bff;box-shadow:0 0 12px #2f6bff;animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%{top:6%}50%{top:92%}100%{top:6%}}
+.row{background:#fff;border-radius:14px;box-shadow:0 4px 14px rgba(20,30,80,.08);padding:12px 14px;width:220px;box-sizing:border-box}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:980px;padding:4px 10px}
+@keyframes pushbtn{0%,55%{background:#0b0b0f}60%,100%{background:#2f6bff}}
+@keyframes btxt1{0%,55%{opacity:1}60%,100%{opacity:0}}
+@keyframes btxt2{0%,55%{opacity:0}60%,100%{opacity:1}}
+.pbtn{position:relative;width:170px;height:46px;border-radius:980px;animation:pushbtn 4s infinite;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700}
+.pbtn span{position:absolute}
+.pb1{animation:btxt1 4s infinite}.pb2{animation:btxt2 4s infinite}
+
+/* inbox segmented (9s) */
+.iseg{position:relative;display:flex;background:#f1f2f7;border-radius:980px;padding:5px;max-width:560px;margin:0 auto}
+.ipill{position:absolute;top:5px;bottom:5px;width:calc(33.333% - 3.5px);border-radius:980px;background:#fff;box-shadow:0 4px 14px rgba(20,30,80,.12);animation:isegmove 9s infinite}
+@keyframes isegmove{0%,28%{left:5px}33%,61%{left:calc(33.333% + 1.5px)}66%,95%{left:calc(66.666% - 2px)}100%{left:5px}}
+.it1,.it2,.it3{position:relative;flex:1;text-align:center;padding:14px 0;font-size:15px;font-weight:700;color:#6b7280}
+.it1{animation:i1 9s infinite}.it2{animation:i2 9s infinite}.it3{animation:i3 9s infinite}
+@keyframes i1{0%,28%{color:#0b0b0f}33%,100%{color:#6b7280}}
+@keyframes i2{0%,28%{color:#6b7280}33%,61%{color:#0b0b0f}66%,100%{color:#6b7280}}
+@keyframes i3{0%,61%{color:#6b7280}66%,95%{color:#0b0b0f}100%{color:#6b7280}}
+.idesc{position:absolute;left:0;right:0;text-align:center;font-size:clamp(22px,3vw,32px);font-weight:700;letter-spacing:-.02em;opacity:0}
+.d1{animation:dd1 9s infinite}.d2{animation:dd2 9s infinite}.d3{animation:dd3 9s infinite}
+@keyframes dd1{0%,28%{opacity:1;transform:none}32%,100%{opacity:0;transform:translateY(-8px)}}
+@keyframes dd2{0%,30%{opacity:0;transform:translateY(8px)}34%,60%{opacity:1;transform:none}64%,100%{opacity:0;transform:translateY(-8px)}}
+@keyframes dd3{0%,63%{opacity:0;transform:translateY(8px)}67%,95%{opacity:1;transform:none}100%{opacity:0}}
+
+/* phone */
+.pseg{position:relative;width:100%;display:flex;background:#f2f3f7;border-radius:12px;padding:3px;box-sizing:border-box}
+.shutter{animation:shutter 3s infinite}
+@keyframes shutter{0%,70%{transform:scale(1)}80%{transform:scale(.88)}90%,100%{transform:scale(1)}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;animation:flash 3s infinite}
+@keyframes flash{0%,74%{opacity:0}78%{opacity:.9}90%,100%{opacity:0}}
+.toast{position:absolute;left:50%;bottom:112px;transform:translateX(-50%);background:#0b0b0f;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;border-radius:980px;white-space:nowrap;opacity:0;animation:toast 3s infinite}
+@keyframes toast{0%,80%{opacity:0;transform:translate(-50%,8px)}86%,96%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+
+/* ---------- showcase scene (16s loop) ---------- */
+.scouter{max-width:880px;margin:0 auto;overflow:hidden}
+.scene{position:relative;width:880px;height:470px;margin:0 auto}
+@media (max-width:940px){.scene{zoom:.8}}
+@media (max-width:760px){.scene{zoom:.62}}
+@media (max-width:580px){.scene{zoom:.46}}
+@media (max-width:440px){.scene{zoom:.38}}
+.scphone{position:absolute;left:40px;top:30px;width:200px;height:410px;background:#0b0b0f;border-radius:38px;padding:8px;box-sizing:border-box;box-shadow:0 30px 60px rgba(47,107,255,.25)}
+.scscreen{position:relative;width:100%;height:100%;background:#fff;border-radius:31px;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:26px 14px 18px;box-sizing:border-box}
+.scvf{position:relative;margin-top:12px;width:100%;flex:1;border-radius:16px;background:#f6f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.scpp{animation:scpp 16s infinite}
+@keyframes scpp{0%,23%{opacity:1}24%,97%{opacity:0}100%{opacity:1}}
+.scflash{position:absolute;inset:0;background:#fff;opacity:0;animation:scflash 16s infinite}
+@keyframes scflash{0%,19%{opacity:0}21%{opacity:.9}24%,100%{opacity:0}}
+.scshut{animation:scshut 16s infinite}
+@keyframes scshut{0%,19%{transform:scale(1)}21%{transform:scale(.85)}24%,100%{transform:scale(1)}}
+.sctoast{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);background:#0b0b0f;color:#fff;font-size:11px;font-weight:700;padding:7px 12px;border-radius:980px;white-space:nowrap;opacity:0;animation:sct 16s infinite}
+@keyframes sct{0%,22%{opacity:0;transform:translate(-50%,8px)}24%,31%{opacity:1;transform:translate(-50%,0)}33%,100%{opacity:0}}
+.scfly{position:absolute;left:98px;top:172px;width:84px;height:108px;background:#fff;border-radius:10px;box-shadow:0 14px 34px rgba(47,107,255,.35);padding:14px 12px;box-sizing:border-box;opacity:0;animation:scfly 16s infinite;z-index:4}
+.scfly i,.scthumb i{display:block;height:5px;border-radius:3px;background:#e5e7ee;margin-bottom:8px}
+@keyframes scfly{0%,23%{opacity:0;left:98px;top:172px;width:84px;height:108px}24%{opacity:1;left:98px;top:172px;width:84px;height:108px}33%{opacity:1;left:348px;top:106px;width:110px;height:150px}34%,100%{opacity:0;left:348px;top:106px;width:110px;height:150px}}
+.scwin{position:absolute;left:330px;top:50px;width:510px;height:380px;background:#fff;border-radius:18px;border:1px solid #e3e5ee;box-shadow:0 30px 70px rgba(20,30,80,.16);overflow:hidden;animation:winon 16s infinite}
+@keyframes winon{0%,24%{opacity:.5;transform:translateY(6px)}30%,96%{opacity:1;transform:none}99%,100%{opacity:.5;transform:translateY(6px)}}
+.scthumb{position:absolute;left:348px;top:106px;width:110px;height:150px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(20,30,80,.14);padding:18px 14px;box-sizing:border-box;overflow:hidden;opacity:0;animation:scthumb 16s infinite;z-index:3}
+@keyframes scthumb{0%,33%{opacity:0}34%,97%{opacity:1}99%,100%{opacity:0}}
+.scscanwrap{position:absolute;inset:0;opacity:0;animation:thscan 16s infinite}
+@keyframes thscan{0%,34%{opacity:0}35%,51%{opacity:1}53%,100%{opacity:0}}
+.scrow{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.sclab{width:70px;font-size:11px;font-weight:700;color:#8a90a0}
+.scval{position:relative;flex:1;height:28px;border-radius:8px;background:#f1f2f7;overflow:hidden}
+.scval span{position:absolute;left:10px;top:0;line-height:28px;font-size:12px;font-weight:700;white-space:nowrap}
+.rv1 span{animation:rv1 16s infinite}.rv2 span{animation:rv2 16s infinite}.rv3 span{animation:rv3 16s infinite}.rv4 span{animation:rv4 16s infinite}.rv5 span{animation:rv5 16s infinite}
+@keyframes rv1{0%,33%{clip-path:inset(0 100% 0 0)}36%,98%{clip-path:inset(0)}99.5%,100%{clip-path:inset(0 100% 0 0)}}
+@keyframes rv2{0%,37%{clip-path:inset(0 100% 0 0)}40%,98%{clip-path:inset(0)}99.5%,100%{clip-path:inset(0 100% 0 0)}}
+@keyframes rv3{0%,41%{clip-path:inset(0 100% 0 0)}44%,98%{clip-path:inset(0)}99.5%,100%{clip-path:inset(0 100% 0 0)}}
+@keyframes rv4{0%,45%{clip-path:inset(0 100% 0 0)}48%,98%{clip-path:inset(0)}99.5%,100%{clip-path:inset(0 100% 0 0)}}
+@keyframes rv5{0%,49%{clip-path:inset(0 100% 0 0)}52%,98%{clip-path:inset(0)}99.5%,100%{clip-path:inset(0 100% 0 0)}}
+.scam{position:absolute;right:6px;top:4px;font-size:10px;font-weight:700;border-radius:980px;padding:4px 9px;background:#efeaff;color:#6d3df0;opacity:0;animation:sam 16s infinite}
+@keyframes sam{0%,54%{opacity:0;transform:scale(.6)}57%,98%{opacity:1;transform:none}99%,100%{opacity:0}}
+.cc1{animation:cc1 16s infinite;color:#8a90a0}.cc2{animation:cc2 16s infinite}
+@keyframes cc1{0%,58%{opacity:1}59%,98%{opacity:0}99.5%,100%{opacity:1}}
+@keyframes cc2{0%,59%{opacity:0}61%,98%{opacity:1}99.5%,100%{opacity:0}}
+.scst{position:absolute;right:0;top:0;font-size:11px;font-weight:700;border-radius:980px;padding:5px 11px;opacity:0;white-space:nowrap}
+.st1{background:#f1f2f7;color:#6b7280;animation:sst1 16s infinite}
+.st2{background:#e8efff;color:#2f6bff;animation:sst2 16s infinite}
+.st3{background:#efeaff;color:#6d3df0;animation:sst3 16s infinite}
+.st4{background:#e6f7ec;color:#16a34a;animation:sst4 16s infinite}
+@keyframes sst1{0%,26%{opacity:1}28%,98%{opacity:0}99.5%,100%{opacity:1}}
+@keyframes sst2{0%,27%{opacity:0}29%,51%{opacity:1}53%,100%{opacity:0}}
+@keyframes sst3{0%,52%{opacity:0}54%,78%{opacity:1}80%,100%{opacity:0}}
+@keyframes sst4{0%,79%{opacity:0}81%,97%{opacity:1}99%,100%{opacity:0}}
+.scbtn{position:relative;margin-top:10px;width:150px;height:40px;border-radius:980px;background:#0b0b0f;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:0;animation:sbtn 16s infinite}
+.scbtn span{position:absolute}
+@keyframes sbtn{0%,50%{opacity:0;background:#0b0b0f;transform:scale(1)}53%{opacity:1}75%{background:#0b0b0f;transform:scale(1)}77%{transform:scale(.94)}79%{transform:scale(1);background:#16a34a}96%{opacity:1;background:#16a34a}99%,100%{opacity:0;background:#0b0b0f}}
+.sb1{animation:sb1 16s infinite}.sb2{animation:sb2 16s infinite}
+@keyframes sb1{0%,77%{opacity:1}78%,100%{opacity:0}}
+@keyframes sb2{0%,77%{opacity:0}79%,98%{opacity:1}99.5%,100%{opacity:0}}
+.sccur{position:absolute;left:790px;top:420px;width:22px;height:22px;opacity:0;animation:scc 16s infinite;z-index:6;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+@keyframes scc{0%,60%{opacity:0;left:790px;top:420px}63%{opacity:1;left:790px;top:420px}74%{opacity:1;left:548px;top:384px}78%{opacity:1;left:548px;top:384px}84%,100%{opacity:0;left:548px;top:384px}}
+.sl{border-top:3px solid #dfe1ea;padding-top:10px;font-size:14px;font-weight:800;color:#9aa0ae}
+.sl1{animation:sl1 16s infinite}.sl2{animation:sl2 16s infinite}.sl3{animation:sl3 16s infinite}.sl4{animation:sl4 16s infinite}
+@keyframes sl1{0%,26%{color:#0b0b0f;border-top-color:#2f6bff}28%,98%{color:#9aa0ae;border-top-color:#dfe1ea}100%{color:#0b0b0f;border-top-color:#2f6bff}}
+@keyframes sl2{0%,27%{color:#9aa0ae;border-top-color:#dfe1ea}29%,51%{color:#0b0b0f;border-top-color:#2f6bff}53%,100%{color:#9aa0ae;border-top-color:#dfe1ea}}
+@keyframes sl3{0%,52%{color:#9aa0ae;border-top-color:#dfe1ea}54%,78%{color:#0b0b0f;border-top-color:#2f6bff}80%,100%{color:#9aa0ae;border-top-color:#dfe1ea}}
+@keyframes sl4{0%,79%{color:#9aa0ae;border-top-color:#dfe1ea}81%,97%{color:#0b0b0f;border-top-color:#2f6bff}99%,100%{color:#9aa0ae;border-top-color:#dfe1ea}}
+
+/* screenshot pan */
+.pan{animation:pan 12s ease-in-out infinite alternate}
+@keyframes pan{from{transform:translate(30px,40px)}to{transform:translate(-50px,-60px)}}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+  .reveal,.up1,.up2,.up3,.up4,.up5{opacity:1 !important;transform:none !important}
+  .d1{opacity:1}
+  .st1,.st2,.st3{display:none}.st4{opacity:1}.sb1{opacity:0}.sb2{opacity:1}.scbtn{opacity:1}.sccur,.scfly{display:none}.scthumb,.scam,.cc2{opacity:1}.cc1{opacity:0}
+  .scpp{opacity:1}.scwin{opacity:1}
+}
+</style>
+
+</head>
+<body>
+
+
+<div style="width:100%;background:#fff;overflow:hidden;position:relative">
+
+<!-- NAV -->
+<nav style="position:relative;z-index:5;padding:18px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<a href="#top" style="font-weight:800;font-size:20px;letter-spacing:-.03em;display:flex;align-items:center;gap:9px">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="0" y="0" width="24" height="24" rx="7" fill="#2f6bff"></rect><path d="M13.2 4.5L6.8 13.2h4.4l-.6 6.3 6.6-8.9h-4.5z" fill="#fff"></path></svg>
+LedgerPush</a>
+<div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+<a class="navlink" href="#how">How it works</a>
+<a class="navlink" href="#inbox">Inbox</a>
+<a class="navlink" href="#features">Features</a>
+<a class="navlink" href="#phone">Phone app</a>
+<a class="navlink" href="#faq">FAQ</a>
+<a class="btn" href="#contact" style="background:#0b0b0f;color:#fff;font-size:14px;font-weight:700;padding:11px 20px;border-radius:980px">Request early access</a>
+</div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section id="top" style="position:relative;padding:56px 22px 110px;box-sizing:border-box">
+<div aria-hidden="true" style="position:absolute;inset:-80px 0 auto 0;height:760px;pointer-events:none;background:radial-gradient(40% 55% at 22% 30%,rgba(120,150,255,.30),transparent 70%),radial-gradient(38% 50% at 78% 18%,rgba(255,170,205,.28),transparent 70%),radial-gradient(40% 45% at 60% 62%,rgba(160,225,255,.30),transparent 70%)"></div>
+<div style="position:relative;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:56px">
+
+<div style="flex:1 1 420px;min-width:0">
+<p class="up1" style="margin:0 0 18px;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">FOR BUSINESSES THAT RUN ON TALLY</p>
+<h1 class="up2" style="margin:0;font-size:clamp(44px,6.4vw,84px);line-height:1.02;font-weight:800;letter-spacing:-.045em">Photograph the bill.<br><span class="it" style="color:#2f6bff;font-size:1.08em">Tally done.</span></h1>
+<p class="up3" style="margin:24px 0 0;max-width:460px;font-size:19px;line-height:1.5;color:#4b5060;font-weight:500">LedgerPush reads your bills and fills the entry. You check it and push it to Tally.</p>
+<div class="up4" style="margin-top:34px;display:flex;gap:12px;flex-wrap:wrap">
+<a class="btn" href="#contact" style="background:#0b0b0f;color:#fff;font-size:16px;font-weight:700;padding:15px 28px;border-radius:980px;box-shadow:0 10px 30px rgba(11,11,15,.25)">Request early access</a>
+<a class="btn" href="#watch" style="background:#fff;color:#0b0b0f;font-size:16px;font-weight:700;padding:15px 28px;border-radius:980px;border:1px solid #dfe1ea">Watch it work</a>
+</div>
+<div class="up5" style="margin-top:34px;display:flex;gap:10px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:700;color:#4b5060;background:rgba(255,255,255,.8);border:1px solid #e9eaf0;border-radius:980px;padding:8px 14px">Works with your Tally</span>
+<span style="font-size:13px;font-weight:700;color:#4b5060;background:rgba(255,255,255,.8);border:1px solid #e9eaf0;border-radius:980px;padding:8px 14px">You approve every entry</span>
+<span style="font-size:13px;font-weight:700;color:#4b5060;background:rgba(255,255,255,.8);border:1px solid #e9eaf0;border-radius:980px;padding:8px 14px">Android + desktop</span>
+</div>
 </div>
 
-<section id="features"><div class="wrap">
-<h2>What LedgerPush does</h2>
-<div class="grid">
-<div class="card"><h3>Snap a bill, done</h3><p>Photograph a supplier bill on your phone. LedgerPush reads the supplier, items, amounts and GST, and you confirm before it goes anywhere.</p></div>
-<div class="card"><h3>Posts straight to Tally</h3><p>Reviewed bills become Purchase, Sales or Journal vouchers in TallyPrime &mdash; with the right ledgers, GST split and cost centres. No retyping.</p></div>
-<div class="card"><h3>Bank alerts to entries</h3><p>Reads the transaction alert emails your bank sends you and turns them into bank entries to review and post.</p></div>
-<div class="card"><h3>Cash book from Google Sheets</h3><p>Keep your daily cash book in a Google Sheet as you do today. Paste its link and LedgerPush imports the entries for you.</p></div>
-<div class="card"><h3>GST reconciliation</h3><p>Match your purchase records against GSTR-2B to spot missing or mismatched invoices before you file.</p></div>
-<div class="card"><h3>Runs on your own computer</h3><p>LedgerPush is installed on your PC, next to Tally. Your business records are stored on your computer, not on our servers.</p></div>
-</div></div></section>
+<div class="up5" style="flex:1 1 480px;min-width:0;position:relative;padding:28px 0">
+<div style="border-radius:26px;overflow:hidden;background:#fff;border:1px solid #e3e5ee;box-shadow:0 40px 90px rgba(20,30,80,.18)">
+<img src="assets/app-bill-references.png" alt="LedgerPush desktop app, Bill References page, with Tally connected" style="display:block;width:100%;height:auto">
+</div>
+<div class="chip" style="top:0;left:-14px"><span class="dot blink"></span>Reading bill&#8230;</div>
+<div class="chip" style="top:46%;right:-12px;animation-delay:-1.5s"><span class="dot" style="background:#8b5cf6"></span>Auto-mapped</div>
+<div class="chip" style="bottom:0;left:8%;animation-delay:-3s"><span class="dot" style="background:#22c55e"></span>Posted to Tally</div>
+</div>
 
-<section id="google-data"><div class="wrap">
-<h2>How LedgerPush uses your Google data</h2>
-<div class="note">
-<p>LedgerPush asks for Google access only for the cash book import feature, and only if you choose to use it. When you click <strong>Sign in with Google</strong>, LedgerPush requests:</p>
-<ul>
-<li><strong>Your Google account email address</strong> &mdash; only to show you which Google account is connected.</li>
-<li><strong>Read-only access to Google Sheets</strong> &mdash; to read the cash book spreadsheet whose link you paste into LedgerPush. It cannot edit or delete anything.</li>
+</div>
+</section>
+
+<!-- WATCH IT WORK (animated scene) -->
+<section id="watch" style="padding:0 22px 120px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;border-radius:40px;background:radial-gradient(45% 70% at 15% 15%,rgba(120,150,255,.22),transparent 70%),radial-gradient(45% 70% at 90% 85%,rgba(255,170,205,.20),transparent 70%),#f6f7fb;padding:clamp(28px,5vw,64px) clamp(8px,3vw,40px) clamp(28px,4vw,48px);box-sizing:border-box">
+<p class="reveal" style="margin:0 0 14px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">WATCH IT WORK</p>
+<h2 class="reveal" style="margin:0 auto 40px;max-width:760px;text-align:center;font-size:clamp(30px,4.4vw,54px);line-height:1.06;font-weight:800;letter-spacing:-.04em">One photo to <span class="it" style="color:#2f6bff;font-size:1.08em">one voucher.</span></h2>
+
+<div class="scouter">
+<div class="scene">
+
+<!-- phone -->
+<div class="scphone">
+<div class="scscreen">
+<div style="font-size:16px;font-weight:800;letter-spacing:-.03em">LedgerPush</div>
+<div style="margin-top:8px;font-size:11px;font-weight:700;color:#fff;background:#2f6bff;border-radius:980px;padding:5px 14px">Purchase</div>
+<div class="scvf">
+<div class="scpp paper"><i style="width:55%;background:#2f6bff"></i><i></i><i></i><i style="width:70%"></i><i style="width:85%"></i><div class="scanline"></div></div>
+<div class="scflash"></div>
+</div>
+<div class="scshut" style="margin-top:14px;width:50px;height:50px;border-radius:50%;border:3px solid #dfe1ea;display:flex;align-items:center;justify-content:center"><div style="width:36px;height:36px;border-radius:50%;background:#2f6bff"></div></div>
+<div class="sctoast">Sent to LedgerPush</div>
+</div>
+</div>
+
+<!-- flying invoice -->
+<div class="scfly"><i style="width:55%;background:#2f6bff"></i><i></i><i></i><i style="width:70%"></i><i style="width:85%"></i></div>
+
+<!-- desktop window -->
+<div class="scwin">
+<div style="height:38px;background:#f6f7fb;border-bottom:1px solid #eceef5;display:flex;align-items:center;gap:6px;padding:0 14px">
+<span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span>
+<span style="margin-left:10px;font-size:11px;font-weight:700;color:#6b7280">LedgerPush &#183; Purchase</span>
+<span style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#16a34a;background:#e6f7ec;border-radius:980px;padding:4px 10px"><span class="dot blink" style="background:#16a34a;width:6px;height:6px"></span>Tally: Connected</span>
+</div>
+<div style="padding:18px;display:flex;gap:20px;box-sizing:border-box">
+<div style="flex:0 0 110px;height:150px;border-radius:10px;border:2px dashed #dfe1ea;box-sizing:border-box"></div>
+<div style="flex:1;min-width:0">
+<div style="position:relative;height:28px;margin-bottom:8px">
+<div style="font-size:16px;font-weight:800;letter-spacing:-.02em;line-height:28px">Review bill</div>
+<div class="scst st1">Waiting for a bill</div>
+<div class="scst st2">Reading&#8230;</div>
+<div class="scst st3">Ready to review</div>
+<div class="scst st4">&#10003; Posted to Tally</div>
+</div>
+<div class="scrow"><div class="sclab">Supplier</div><div class="scval rv1"><span>Fresh Veg Traders</span><div class="scam">Auto-mapped</div></div></div>
+<div class="scrow"><div class="sclab">Bill no.</div><div class="scval rv2"><span>INV-2041</span></div></div>
+<div class="scrow"><div class="sclab">Date</div><div class="scval rv3"><span>18 Oct 2026</span></div></div>
+<div class="scrow"><div class="sclab">GST</div><div class="scval rv4"><span>&#8377; 612.00</span></div></div>
+<div class="scrow"><div class="sclab">Total</div><div class="scval rv5"><span>&#8377; 12,852.00</span></div></div>
+<div class="scrow"><div class="sclab">Cost centre</div><div class="scval"><span class="cc1">Select&#8230;</span><span class="cc2">Erode</span></div></div>
+<div class="scbtn"><span class="sb1">Push to Tally</span><span class="sb2">&#10003; Posted</span></div>
+</div>
+</div>
+</div>
+
+<!-- invoice that lands in the window -->
+<div class="scthumb"><i style="width:55%;background:#2f6bff"></i><i></i><i></i><i style="width:70%"></i><i style="width:85%"></i><div class="scscanwrap"><div class="scanline"></div></div></div>
+
+<!-- cursor -->
+<svg class="sccur" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2l16 9-7 2 4 8-3 1.5-4-8-5 5z" fill="#0b0b0f" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+
+</div>
+</div>
+
+<div style="margin:36px auto 0;max-width:640px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+<div class="sl sl1">Snap</div>
+<div class="sl sl2">AI reads</div>
+<div class="sl sl3">You review</div>
+<div class="sl sl4">Push to Tally</div>
+</div>
+</div>
+</section>
+
+<!-- PROBLEM -->
+<section style="padding:40px 22px 120px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto">
+<p class="reveal" style="margin:0 0 14px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.14em;color:#6b7280">THE PROBLEM</p>
+<h2 class="reveal" style="margin:0 auto;max-width:760px;text-align:center;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">Accounts shouldn&#8217;t mean <span class="it" style="color:#2f6bff;font-size:1.08em">typing.</span></h2>
+<div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
+<div class="reveal" style="background:#f6f7fb;border-radius:26px;padding:32px 30px"><div style="font-size:15px;font-weight:800;color:#2f6bff">01</div><h3 style="margin:14px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Paper piles up.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">Bills wait days for someone to enter them.</p></div>
+<div class="reveal" style="background:#f6f7fb;border-radius:26px;padding:32px 30px"><div style="font-size:15px;font-weight:800;color:#2f6bff">02</div><h3 style="margin:14px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Typing is slow.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">Every ledger, GST line and total, by hand.</p></div>
+<div class="reveal" style="background:#f6f7fb;border-radius:26px;padding:32px 30px"><div style="font-size:15px;font-weight:800;color:#2f6bff">03</div><h3 style="margin:14px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Mistakes slip in.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">One wrong digit and the books are off.</p></div>
+</div>
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:#f6f7fb;padding:120px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto">
+<p class="reveal" style="margin:0 0 14px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">HOW IT WORKS</p>
+<h2 class="reveal" style="margin:0 auto;max-width:760px;text-align:center;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">From photo to Tally in <span class="it" style="color:#2f6bff;font-size:1.08em">four steps.</span></h2>
+<div style="margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px">
+
+<div class="reveal lift" style="background:#fff;border-radius:28px;padding:20px 20px 28px">
+<div class="mini">
+<div class="mseg"><div class="mpill"></div><div class="mt mt1">Purchase</div><div class="mt mt2">Sales</div><div class="mt mt3">Journal</div></div>
+</div>
+<div style="padding:22px 8px 0"><div style="font-size:14px;font-weight:800;color:#2f6bff">Step 1</div><h3 style="margin:6px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Pick the type. Snap.</h3><p style="margin:0;font-size:15.5px;line-height:1.5;color:#6b7280">You tap it on every bill. Never guessed.</p></div>
+</div>
+
+<div class="reveal lift" style="background:#fff;border-radius:28px;padding:20px 20px 28px">
+<div class="mini">
+<div class="paper"><i style="width:55%;background:#2f6bff"></i><i></i><i></i><i style="width:70%"></i><i style="width:85%"></i><div class="scanline"></div></div>
+<span class="tag" style="position:absolute;bottom:14px;background:#fff;color:#2f6bff;box-shadow:0 4px 14px rgba(20,30,80,.08)">Reading&#8230;</span>
+</div>
+<div style="padding:22px 8px 0"><div style="font-size:14px;font-weight:800;color:#2f6bff">Step 2</div><h3 style="margin:6px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">AI reads it.</h3><p style="margin:0;font-size:15.5px;line-height:1.5;color:#6b7280">Supplier, items, GST and total, in seconds.</p></div>
+</div>
+
+<div class="reveal lift" style="background:#fff;border-radius:28px;padding:20px 20px 28px">
+<div class="mini">
+<div class="row">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:13px;font-weight:700">Supplier</span><span class="tag" style="background:#efeaff;color:#6d3df0">Auto-mapped</span></div>
+<div style="margin-top:10px;height:30px;border-radius:9px;background:#f6f7fb;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:12px;font-weight:700;color:#6b7280">Cost centre <span>&#9662;</span></div>
+</div>
+</div>
+<div style="padding:22px 8px 0"><div style="font-size:14px;font-weight:800;color:#2f6bff">Step 3</div><h3 style="margin:6px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">It lands in its window.</h3><p style="margin:0;font-size:15.5px;line-height:1.5;color:#6b7280">Debits and credits filled. Photo beside it.</p></div>
+</div>
+
+<div class="reveal lift" style="background:#fff;border-radius:28px;padding:20px 20px 28px">
+<div class="mini">
+<div class="pbtn"><span class="pb1">Push to Tally</span><span class="pb2">&#10003; Posted</span></div>
+</div>
+<div style="padding:22px 8px 0"><div style="font-size:14px;font-weight:800;color:#2f6bff">Step 4</div><h3 style="margin:6px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">You check and push.</h3><p style="margin:0;font-size:15.5px;line-height:1.5;color:#6b7280">Nothing posts until you say so.</p></div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- INBOX -->
+<section id="inbox" style="padding:120px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;text-align:center">
+<p class="reveal" style="margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">THE INBOX</p>
+<h2 class="reveal" style="margin:0 auto;max-width:760px;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">Only shows what <span class="it" style="color:#2f6bff;font-size:1.08em">needs you.</span></h2>
+<div class="reveal" style="margin-top:48px">
+<div class="iseg"><div class="ipill"></div><div class="it1">Pending</div><div class="it2">Action Needed</div><div class="it3">Extracted</div></div>
+<div style="position:relative;height:90px;margin-top:40px">
+<div class="idesc d1">Bills being read. Nothing to do.</div>
+<div class="idesc d2">Pick a type. It goes on.</div>
+<div class="idesc d3">A record of every bill sent or posted.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" style="background:#f6f7fb;padding:120px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto">
+<p class="reveal" style="margin:0 0 14px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">WHAT IT DOES</p>
+<h2 class="reveal" style="margin:0 auto;max-width:760px;text-align:center;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">Built around real <span class="it" style="color:#2f6bff;font-size:1.08em">accounts work.</span></h2>
+
+<div class="reveal" style="margin-top:56px;background:#fff;border-radius:32px;padding:clamp(24px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:40px;border:1px solid #eceef5">
+<div style="flex:1 1 320px;min-width:0">
+<div class="tag" style="background:#e8efff;color:#2f6bff;font-size:12px">BILL REFERENCES</div>
+<h3 style="margin:16px 0 10px;font-size:clamp(26px,3.4vw,40px);line-height:1.1;font-weight:800;letter-spacing:-.03em">Payments that find their invoice.</h3>
+<p style="margin:0;font-size:17px;line-height:1.5;color:#6b7280">Full, part, advance or on account.</p>
+</div>
+<div style="flex:1 1 380px;min-width:0;border-radius:22px;overflow:hidden;border:1px solid #e3e5ee;box-shadow:0 20px 50px rgba(20,30,80,.10)">
+<div style="height:300px;overflow:hidden;background:#fff">
+<img class="pan" src="assets/app-bill-references.png" alt="Bill references page: choose a ledger, allocation, outstanding invoice and amount" style="display:block;width:190%;max-width:none;height:auto;margin-left:-52%;margin-top:-26%">
+</div>
+</div>
+</div>
+
+<div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+
+<div class="reveal lift" style="background:#eef3ff;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2f6bff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Learns your suppliers.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">Post once. The next bill arrives mapped.</p>
+</div>
+
+<div class="reveal lift" style="background:#fff0f3;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5M12 16h.01"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Flags doubtful totals.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">A red note, right beside the photo.</p>
+</div>
+
+<div class="reveal lift" style="background:#f2edff;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#6d3df0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M3 9h18M8 14h4"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">POS sales, day-wise.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">Petpooja works with zero setup.</p>
+</div>
+
+<div class="reveal lift" style="background:#e9f8ee;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"></path><path d="M9 13l2 2 4-4"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">GSTR-2B Reconciliation.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">Never miss input credit.</p>
+</div>
+
+<div class="reveal lift" style="background:#fff4e6;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ea7a0c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">Bank alerts, Cash Book, P&amp;L.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">Bank email alerts and your Google Sheet cash book, imported.</p>
+</div>
+
+<div class="reveal lift" style="background:#e8f7fb;border-radius:28px;padding:34px 32px">
+<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12"></path><path d="M9 21v-7h6v7"></path></svg>
+<h3 style="margin:18px 0 6px;font-size:22px;font-weight:800;letter-spacing:-.02em">One login per branch.</h3>
+<p style="margin:0;font-size:16px;line-height:1.5;color:#5b6272">Staff see their branch. Owners see all.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- PHONE -->
+<section id="phone" style="padding:120px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;border-radius:40px;background:linear-gradient(135deg,#eef3ff 0%,#f4eeff 55%,#fff0f6 100%);padding:clamp(28px,5vw,72px);display:flex;flex-wrap:wrap;align-items:center;gap:56px;justify-content:center;overflow:hidden">
+<div class="reveal" style="flex:1 1 340px;min-width:0">
+<p style="margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">ANDROID APP</p>
+<h2 style="margin:0;font-size:clamp(40px,5.6vw,72px);line-height:1.02;font-weight:800;letter-spacing:-.045em">Snap. Tap.<br><span class="it" style="color:#2f6bff;font-size:1.08em">Done.</span></h2>
+<div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:10px">
+<span style="font-size:14px;font-weight:700;background:#fff;border-radius:980px;padding:10px 18px;box-shadow:0 4px 14px rgba(20,30,80,.07)">Share to LedgerPush</span>
+<span style="font-size:14px;font-weight:700;background:#fff;border-radius:980px;padding:10px 18px;box-shadow:0 4px 14px rgba(20,30,80,.07)">Drive backup off Wi-Fi</span>
+<span style="font-size:14px;font-weight:700;background:#fff;border-radius:980px;padding:10px 18px;box-shadow:0 4px 14px rgba(20,30,80,.07)">One login per branch</span>
+</div>
+</div>
+<div style="flex:0 0 auto">
+<div style="position:relative;width:280px;height:570px;background:#0b0b0f;border-radius:46px;padding:10px;box-sizing:border-box;box-shadow:0 40px 80px rgba(47,107,255,.25)">
+<div style="position:relative;width:100%;height:100%;background:#fff;border-radius:37px;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:32px 20px 26px;box-sizing:border-box">
+<div style="font-size:22px;font-weight:800;letter-spacing:-.03em">LedgerPush</div>
+<div style="margin-top:4px;font-size:12px;font-weight:600;color:#6b7280">What is this bill?</div>
+<div class="pseg" style="margin-top:14px">
+<div class="mpill"></div>
+<div class="mt mt1">Purchase</div><div class="mt mt2">Sales</div><div class="mt mt3">Journal</div>
+</div>
+<div style="position:relative;margin-top:14px;width:100%;flex:1;border-radius:20px;background:#f6f7fb;display:flex;align-items:center;justify-content:center;overflow:hidden">
+<div class="paper"><i style="width:55%;background:#2f6bff"></i><i></i><i></i><i style="width:70%"></i><i style="width:85%"></i><div class="scanline"></div></div>
+<div class="flash"></div>
+</div>
+<div class="shutter" style="margin-top:16px;width:60px;height:60px;border-radius:50%;border:4px solid #dfe1ea;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:44px;border-radius:50%;background:#2f6bff"></div></div>
+<div class="toast">Sent to LedgerPush</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SECURITY / TRUST -->
+<section style="padding:20px 22px 120px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto">
+<p class="reveal" style="margin:0 0 14px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">YOU STAY IN CONTROL</p>
+<h2 class="reveal" style="margin:0 auto;max-width:760px;text-align:center;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">Your Tally. <span class="it" style="color:#2f6bff;font-size:1.08em">Your call.</span></h2>
+<div style="margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px">
+<div class="reveal" style="border:1px solid #e9eaf0;border-radius:26px;padding:30px"><h3 style="margin:0 0 6px;font-size:20px;font-weight:800;letter-spacing:-.02em">Nothing posts alone.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">You pick the type and cost centre, then push.</p></div>
+<div class="reveal" style="border:1px solid #e9eaf0;border-radius:26px;padding:30px"><h3 style="margin:0 0 6px;font-size:20px;font-weight:800;letter-spacing:-.02em">Tally stays on your PC.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">A small Connector links it. Never exposed online.</p></div>
+<div class="reveal" style="border:1px solid #e9eaf0;border-radius:26px;padding:30px"><h3 style="margin:0 0 6px;font-size:20px;font-weight:800;letter-spacing:-.02em">Doubts are flagged.</h3><p style="margin:0;font-size:16px;line-height:1.5;color:#6b7280">Unreadable bills arrive empty, with a note.</p></div>
+</div>
+</div>
+</section>
+
+<!-- RESTAURANTS -->
+<section style="background:#f6f7fb;padding:100px 22px;box-sizing:border-box;text-align:center">
+<div style="max-width:900px;margin:0 auto">
+<p class="reveal" style="margin:0 0 14px;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff">BUILT FIRST FOR RESTAURANTS</p>
+<h2 class="reveal" style="margin:0;font-size:clamp(30px,4.2vw,50px);line-height:1.08;font-weight:800;letter-spacing:-.04em">Born in a real <span class="it" style="color:#2f6bff;font-size:1.08em">restaurant.</span></h2>
+<div class="reveal" style="margin-top:36px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="font-size:15px;font-weight:700;color:#fff;background:#2f6bff;border-radius:980px;padding:11px 20px">Petpooja day reports</span>
+<span style="font-size:15px;font-weight:700;color:#fff;background:#2f6bff;border-radius:980px;padding:11px 20px">Swiggy and Zomato sales</span>
+<span style="font-size:15px;font-weight:700;color:#6b7280;background:#fff;border:1px solid #e3e5ee;border-radius:980px;padding:11px 20px">Commission bills &#183; soon</span>
+<span style="font-size:15px;font-weight:700;color:#6b7280;background:#fff;border:1px solid #e3e5ee;border-radius:980px;padding:11px 20px">Item-wise purchases &#183; soon</span>
+<span style="font-size:15px;font-weight:700;color:#6b7280;background:#fff;border:1px solid #e3e5ee;border-radius:980px;padding:11px 20px">Owners&#8217; dashboard &#183; soon</span>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding:120px 22px;box-sizing:border-box">
+<div style="max-width:760px;margin:0 auto">
+<h2 class="reveal" style="margin:0 0 40px;text-align:center;font-size:clamp(32px,4.6vw,56px);line-height:1.06;font-weight:800;letter-spacing:-.04em">Questions, <span class="it" style="color:#2f6bff;font-size:1.08em">answered.</span></h2>
+<details open><summary>Does it post to Tally by itself?</summary><p style="margin:0 0 22px;font-size:16.5px;line-height:1.55;color:#6b7280">No. You review every entry, pick the cost centre and push it.</p></details>
+<details><summary>What if a bill can&#8217;t be read?</summary><p style="margin:0 0 22px;font-size:16.5px;line-height:1.55;color:#6b7280">It still arrives in its window, empty, with a note to fill it from the photo.</p></details>
+<details><summary>Do I need new hardware?</summary><p style="margin:0 0 22px;font-size:16.5px;line-height:1.55;color:#6b7280">No. Your Tally PC, a small Connector app and an Android phone are enough.</p></details>
+<details><summary>Does it work for several branches?</summary><p style="margin:0 0 22px;font-size:16.5px;line-height:1.55;color:#6b7280">Yes. Each branch has its own login, and bills are filed per branch.</p></details>
+</div>
+</section>
+
+<!-- GOOGLE DATA (required for Google app verification: keep) -->
+<section id="google-data" style="padding:0 22px 100px;box-sizing:border-box">
+<div style="max-width:820px;margin:0 auto;border:1px solid #e9eaf0;border-radius:32px;padding:clamp(24px,4vw,44px);background:#fff">
+<h2 style="margin:0 0 18px;font-size:clamp(26px,3.4vw,38px);line-height:1.1;font-weight:800;letter-spacing:-.03em">How LedgerPush uses your Google data</h2>
+<p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:#4b5060">LedgerPush asks for Google access only for the cash book import feature, and only if you choose to use it. When you click <strong>Sign in with Google</strong>, LedgerPush requests:</p>
+<ul style="margin:0 0 14px;padding-left:22px;font-size:16px;line-height:1.6;color:#4b5060">
+<li><strong>Your Google account email address</strong> &#8212; only to show you which Google account is connected.</li>
+<li><strong>Read-only access to Google Sheets</strong> &#8212; to read the cash book spreadsheet whose link you paste into LedgerPush. It cannot edit or delete anything.</li>
 </ul>
-<p>The cash book entries it reads are saved on your own computer and used only to create entries in your Tally. Your Google data is never sent to our servers, never shared or sold, never used for advertising, and never used to train AI. You can disconnect at any time in LedgerPush's Settings, or from your <a href="https://myaccount.google.com/permissions">Google Account permissions</a>.</p>
-<p>LedgerPush's use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements. Full details are in our <a href="/privacy.html">Privacy Policy</a>.</p>
-</div></div></section>
-</main>
-<footer><div class="wrap">
-<div class="links"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a><a href="mailto:ledgerpush.admin@gmail.com">ledgerpush.admin@gmail.com</a></div>
-<p>&copy; 2026 LedgerPush &middot; A.L. Mohammed Rameez Raja, Erode, Tamil Nadu, India.</p>
-<p>Tally and TallyPrime are trademarks of Tally Solutions Pvt. Ltd. LedgerPush is an independent product and is not affiliated with, endorsed by or sponsored by Tally Solutions.</p>
-</div></footer></body></html>
+<p style="margin:0 0 14px;font-size:16px;line-height:1.6;color:#4b5060">The cash book entries it reads are saved on your own computer and used only to create entries in your Tally. Your Google data is never sent to our servers, never shared or sold, never used for advertising, and never used to train AI. You can disconnect at any time in LedgerPush&#8217;s Settings, or from your <a href="https://myaccount.google.com/permissions" style="color:#2f6bff;text-decoration:underline">Google Account permissions</a>.</p>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#4b5060">LedgerPush&#8217;s use and transfer of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" style="color:#2f6bff;text-decoration:underline">Google API Services User Data Policy</a>, including the Limited Use requirements. Full details are in our <a href="/privacy.html" style="color:#2f6bff;text-decoration:underline">Privacy Policy</a>.</p>
+</div>
+</section>
+
+<!-- CTA -->
+<section id="contact" style="padding:0 22px 100px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;border-radius:40px;text-align:center;padding:clamp(48px,8vw,100px) 22px;background:radial-gradient(50% 80% at 20% 20%,rgba(120,150,255,.40),transparent 70%),radial-gradient(50% 80% at 85% 80%,rgba(255,170,205,.38),transparent 70%),#f4f6ff">
+<h2 class="reveal" style="margin:0 auto;max-width:760px;font-size:clamp(36px,5.6vw,72px);line-height:1.03;font-weight:800;letter-spacing:-.045em">Ready to stop <span class="it" style="color:#2f6bff;font-size:1.08em">typing?</span></h2>
+<div class="reveal" style="margin-top:34px;display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap">
+<a class="btn" href="mailto:ledgerpush.admin@gmail.com?subject=LedgerPush%20enquiry" style="background:#0b0b0f;color:#fff;font-size:16px;font-weight:700;padding:16px 30px;border-radius:980px;box-shadow:0 10px 30px rgba(11,11,15,.25)">Request early access</a>
+<a class="btn" href="#google-data" style="background:#fff;color:#0b0b0f;font-size:16px;font-weight:700;padding:16px 30px;border-radius:980px;border:1px solid #dfe1ea">How we use Google data</a>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer style="padding:0 22px 32px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;border-top:1px solid #e9eaf0;padding-top:24px;font-size:13px;line-height:1.6;color:#6b7280">
+<div style="display:flex;gap:22px;flex-wrap:wrap;margin-bottom:14px;font-weight:700">
+<a href="/privacy.html" style="color:#0b0b0f">Privacy Policy</a>
+<a href="/terms.html" style="color:#0b0b0f">Terms of Service</a>
+<a href="mailto:ledgerpush.admin@gmail.com" style="color:#0b0b0f">ledgerpush.admin@gmail.com</a>
+</div>
+<p style="margin:0 0 8px">&#169; 2026 LedgerPush &#183; A.L. Mohammed Rameez Raja, Erode, Tamil Nadu, India.</p>
+<p style="margin:0">Tally and TallyPrime are trademarks of Tally Solutions Pvt. Ltd. LedgerPush is an independent product and is not affiliated with, endorsed by or sponsored by Tally Solutions.</p>
+</div>
+</footer>
+
+</div>
+
+</body>
+</html>
