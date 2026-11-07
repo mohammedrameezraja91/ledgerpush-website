@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start your LedgerPush trial</title>
+<meta name="description" content="Start your 1-month LedgerPush trial.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='7' fill='%232f6bff'/%3E%3Cpath d='M13.2 4.5L6.8 13.2h4.4l-.6 6.3 6.6-8.9h-4.5z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#0b0b0f;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.it{font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.01em}
+.navlink{font-size:14px;font-weight:600;color:#4b5060}.navlink:hover{color:#0b0b0f}
+.btn{transition:transform .2s,box-shadow .2s;cursor:pointer;border:0;font-family:inherit}.btn:hover{transform:translateY(-2px)}
+.card{background:#fff;border:1px solid #e9eaf0;border-radius:28px;padding:32px;box-shadow:0 10px 40px rgba(20,30,80,.06)}
+label{display:block;font-size:14px;font-weight:700;margin:18px 0 6px}
+input{width:100%;box-sizing:border-box;font:inherit;font-size:16px;padding:14px 16px;border:1px solid #dfe1ea;border-radius:14px;outline:0;background:#fff}
+input:focus{border-color:#2f6bff;box-shadow:0 0 0 3px rgba(47,107,255,.15)}
+.hint{font-size:13px;color:#6b7280;margin:6px 0 0;line-height:1.5}
+.msg{font-size:14px;margin:12px 0 0;font-weight:600}
+.err{color:#b91c1c}.ok{color:#15803d}
+.primary{background:#0b0b0f;color:#fff;font-size:16px;font-weight:700;padding:15px 28px;border-radius:980px;box-shadow:0 10px 30px rgba(11,11,15,.25);margin-top:24px;width:100%}
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;font-size:15.5px;border-bottom:1px solid #f0f1f5}
+.row:last-child{border-bottom:0}
+.hide{display:none}
+</style>
+</head>
+<body>
+<nav style="padding:18px 22px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<a href="/" style="font-weight:800;font-size:20px;letter-spacing:-.03em;display:flex;align-items:center;gap:9px">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#2f6bff"></rect><path d="M13.2 4.5L6.8 13.2h4.4l-.6 6.3 6.6-8.9h-4.5z" fill="#fff"></path></svg>
+LedgerPush</a>
+<div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+<a class="navlink" href="/#how">How it works</a>
+<a class="navlink" href="/#features">Features</a>
+<a class="navlink" href="/download.html">Download</a>
+</div>
+</div>
+</nav>
+
+<section style="position:relative;padding:36px 22px 70px;box-sizing:border-box;overflow:hidden">
+<div aria-hidden="true" style="position:absolute;inset:-80px 0 auto 0;height:520px;pointer-events:none;background:radial-gradient(40% 55% at 22% 30%,rgba(120,150,255,.26),transparent 70%),radial-gradient(38% 50% at 78% 18%,rgba(255,170,205,.24),transparent 70%)"></div>
+<div style="position:relative;max-width:560px;margin:0 auto">
+<p style="margin:0 0 12px;font-size:13px;font-weight:800;letter-spacing:.14em;color:#2f6bff;text-align:center">START YOUR TRIAL</p>
+<h1 style="margin:0 0 28px;font-size:clamp(34px,5vw,52px);line-height:1.05;font-weight:800;letter-spacing:-.04em;text-align:center">One month, <span class="it" style="color:#2f6bff;font-size:1.08em">on us.</span></h1>
+
+<!-- STEP 1 -->
+<div class="card" id="step1">
+<form id="f1" novalidate>
+<label for="name" style="margin-top:0">Your name</label>
+<input id="name" autocomplete="name" required>
+<label for="email">Email (your licence key is sent here)</label>
+<input id="email" type="email" autocomplete="email" required>
+<label for="code">Invite code</label>
+<input id="code" autocapitalize="characters" autocomplete="off" placeholder="Enter your code">
+<p class="hint">Trial access is by invite code for now. No code? <a href="mailto:ledgerpush.admin@gmail.com?subject=LedgerPush%20trial%20request" style="color:#2f6bff;font-weight:700">Ask us for one</a>.</p>
+<p class="msg err hide" id="e1"></p>
+<button class="btn primary" type="submit">Continue</button>
+</form>
+</div>
+
+<!-- STEP 2 -->
+<div class="card hide" id="step2">
+<h2 style="margin:0 0 6px;font-size:24px;font-weight:800;letter-spacing:-.02em">Pay &#8377;1 to start</h2>
+<p class="hint" style="margin:0 0 14px">Code applied. Scan with any UPI app (Google Pay, PhonePe, Paytm, BHIM).</p>
+<div class="row"><span>1-month licence</span><span id="plan-line">included</span></div>
+<div class="row"><span>Starter credits (pages the AI can read)</span><span>200</span></div>
+<div class="row"><b>You pay</b><b>&#8377;1</b></div>
+<div style="text-align:center;margin:22px 0 6px">
+<img src="/pay-trial.png" alt="UPI QR code for 1 rupee" width="220" height="220" style="border:1px solid #e9eaf0;border-radius:18px;padding:10px;background:#fff">
+<p class="hint" style="text-align:center">Or pay to UPI ID <b style="color:#0b0b0f">raja.hystan-1@oksbi</b></p>
+</div>
+<form id="f2" novalidate>
+<label for="txn">UPI transaction ID</label>
+<input id="txn" inputmode="numeric" autocomplete="off" placeholder="12-digit number from your payment app">
+<p class="hint">You&#8217;ll find it in your payment app under the payment details (often called UTR or reference number).</p>
+<p class="msg err hide" id="e2"></p>
+<button class="btn primary" type="submit" id="paid">I&#8217;ve paid</button>
+</form>
+</div>
+
+<!-- STEP 3 -->
+<div class="card hide" id="step3" style="text-align:center">
+<div style="width:56px;height:56px;border-radius:50%;background:#dcfce7;color:#15803d;display:grid;place-items:center;margin:0 auto 14px;font-size:28px;font-weight:800">&#10003;</div>
+<h2 style="margin:0 0 8px;font-size:26px;font-weight:800;letter-spacing:-.02em">Thank you!</h2>
+<p style="margin:0;font-size:16px;line-height:1.6;color:#4b5060">We&#8217;re checking your payment. As soon as it&#8217;s confirmed, we&#8217;ll email your licence key and download links to <b id="done-email" style="color:#0b0b0f"></b>. This usually takes a few hours.</p>
+<p class="hint" style="margin-top:14px">Didn&#8217;t hear back? Write to <a href="mailto:ledgerpush.admin@gmail.com" style="color:#2f6bff;font-weight:700">ledgerpush.admin@gmail.com</a> with your payment reference.</p>
+<a href="/download.html" class="btn" style="display:inline-block;margin-top:20px;background:#fff;color:#0b0b0f;font-size:15px;font-weight:700;padding:13px 24px;border-radius:980px;border:1px solid #dfe1ea">Download the app meanwhile</a>
+</div>
+
+<p class="hint" style="text-align:center;margin-top:20px">By continuing you agree to the <a href="/terms.html" style="color:#2f6bff">Terms</a> and <a href="/privacy.html" style="color:#2f6bff">Privacy Policy</a>.</p>
+</div>
+</section>
+
+<footer style="padding:0 22px 32px;box-sizing:border-box">
+<div style="max-width:1120px;margin:0 auto;border-top:1px solid #e9eaf0;padding-top:24px;font-size:13px;line-height:1.6;color:#6b7280">
+<div style="display:flex;gap:22px;flex-wrap:wrap;margin-bottom:14px;font-weight:700">
+<a href="/privacy.html" style="color:#0b0b0f">Privacy Policy</a>
+<a href="/terms.html" style="color:#0b0b0f">Terms of Service</a>
+<a href="mailto:ledgerpush.admin@gmail.com" style="color:#0b0b0f">ledgerpush.admin@gmail.com</a>
+</div>
+<p style="margin:0 0 8px">&#169; 2026 LedgerPush &#183; A.L. Mohammed Rameez Raja, Erode, Tamil Nadu, India.</p>
+<p style="margin:0">Tally and TallyPrime are trademarks of Tally Solutions Pvt. Ltd. LedgerPush is an independent product and is not affiliated with, endorsed by or sponsored by Tally Solutions.</p>
+</div>
+</footer>
+
+<script>
+// Where orders are sent. The licence service will receive them (to be built).
+var ORDER_API = "https://admin.ledgerpush.in/api/orders";
+var $ = function(id){return document.getElementById(id)};
+var order = {};
+function show(id){["step1","step2","step3"].forEach(function(s){$(s).classList.toggle("hide", s!==id)});window.scrollTo({top:0,behavior:"smooth"})}
+function err(id, t){var e=$(id);e.textContent=t;e.classList.toggle("hide",!t)}
+
+$("f1").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var name=$("name").value.trim(), email=$("email").value.trim(), code=$("code").value.trim().toUpperCase();
+  if(!name){return err("e1","Please enter your name.")}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){return err("e1","Please enter a valid email address.")}
+  // Convenience check only. The real check, and the use limit, happen on our server.
+  if(code!=="LPTEST"){return err("e1","That code isn't valid. Trial access is by invite code for now.")}
+  err("e1","");
+  order={name:name,email:email,code:code};
+  show("step2");
+});
+
+$("f2").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  var txn=$("txn").value.replace(/\s+/g,"");
+  if(!/^\d{10,16}$/.test(txn)){return err("e2","Please enter the transaction ID from your payment app (usually 12 digits).")}
+  err("e2","");
+  order.txn=txn;
+  var b=$("paid"); b.disabled=true; b.textContent="Sending...";
+  fetch(ORDER_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)})
+   .then(function(r){ if(!r.ok) throw new Error("bad"); return r.json(); })
+   .then(function(){ $("done-email").textContent=order.email; show("step3"); })
+   .catch(function(){
+     b.disabled=false; b.textContent="I’ve paid";
+     err("e2","We couldn't send this just now. Please email ledgerpush.admin@gmail.com with your name, email and transaction ID "+txn+", and we'll set you up.");
+   });
+});
+</script>
+</body>
+</html>
