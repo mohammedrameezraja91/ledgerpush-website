@@ -14,7 +14,7 @@
 <h2>1. The short version</h2>
 <ul>
 <li>LedgerPush runs on your own Windows computer. Your business records (bills, vouchers, bank and cash entries, settings) are stored on that computer, not on our servers.</li>
-<li>If you connect Google, LedgerPush only reads the Google Sheets you link, keeps what it reads on your computer, and never sends your Google data to us or to any AI service.</li>
+<li>If you connect Google, LedgerPush can only use the files you choose in Google&rsquo;s own file chooser (for example, your cash book sheet). It keeps what it reads on your computer, and never sends your Google data to us or to any AI service.</li>
 <li>Bill and bank-statement images you choose to have read automatically are sent to Google&rsquo;s Gemini AI service through our relay server so the details can be extracted. We do not store their content.</li>
 <li>We never sell your data or use it for advertising.</li>
 </ul>
@@ -25,13 +25,13 @@
 <p>If you use Mobile Bill Capture, your phone sends bill photos directly to LedgerPush on your computer over your own Wi-Fi network.</p>
 
 <h2>3. Google user data</h2>
-<p>LedgerPush uses Google access only for the Google Sheets cash book import, and only if you click <strong>Sign in with Google</strong> in Settings. It requests the following, and nothing more:</p>
+<p>LedgerPush uses Google access only for the Google Sheets cash book import and for Google Drive bill upload, and only if you click <strong>Sign in with Google</strong>. It requests the following, and nothing more:</p>
 <ul>
 <li><strong>Basic account information (your email address)</strong> &mdash; used only to show which Google account is connected.</li>
-<li><strong>Read-only access to Google Sheets</strong> (<code>spreadsheets.readonly</code>) &mdash; used only to read the cash book spreadsheet(s) whose link you give LedgerPush. LedgerPush cannot create, edit or delete any of your Google files.</li>
+<li><strong>Access to files you choose</strong> (<code>drive.file</code>) &mdash; LedgerPush opens Google&rsquo;s own file chooser (Google Picker). It can then open only the cash book spreadsheet(s) or Drive folder you pick there. It cannot see, list or open any other file in your Google Drive, and it never deletes your files.</li>
 </ul>
 <h3>How we use it</h3>
-<p>LedgerPush reads the rows of the spreadsheet you link (date, type, particulars, amounts and similar cash book columns), shows them to you for review, and &mdash; when you choose to &mdash; posts them as entries in your TallyPrime. The data read from Google Sheets is stored only on your computer.</p>
+<p>LedgerPush reads the rows of the spreadsheet you choose (date, type, particulars, amounts and similar cash book columns), shows them to you for review, and &mdash; when you choose to &mdash; posts them as entries in your TallyPrime. The data read from Google Sheets is stored only on your computer.</p>
 <h3>What we never do with Google user data</h3>
 <ul>
 <li>We do not send it to our servers or store it anywhere other than your computer.</li>
